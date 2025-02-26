@@ -1,4 +1,4 @@
-### Déclaration du service déployment 
+### front app déployment 
 
 1. apiVersion: apps/v1
 Cela indique que nous utilisons la version apps/v1 de l'API Kubernetes, qui est utilisée pour gérer les déploiements et autres ressources liées aux applications.
@@ -78,3 +78,49 @@ Est de type NodePort, ce qui permet d'exposer le service à l'extérieur du clus
 Est accessible depuis l'extérieur du cluster sur le port 31000 sur tous les nœuds du cluster.
 Cible les pods ayant l'étiquette app: vote.
 Cela permet à toute application extérieure de se connecter au service via l'IP d'un nœud et le port 31000, ce qui redirigera le trafic vers les pods contenant l'application "vote".
+
+
+### Déclaration du service redis
+
+1. apiVersion: v1
+Cette ligne spécifie la version de l'API de Kubernetes utilisée pour cette ressource. v1 est la version stable pour les services Kubernetes.
+2. kind: Service
+Le type de la ressource est Service. Cela signifie que tu crées un service dans Kubernetes pour permettre la communication entre les différents pods du cluster.
+3. metadata:
+Cette section contient des informations sur le service, comme des labels et un nom.
+
+labels:
+
+app: redis: Ce label est utilisé pour identifier le service dans Kubernetes. Les labels sont des paires clé-valeur qui aident à organiser et à filtrer les ressources. Ici, app: redis permet de dire que ce service correspond à l'application Redis.
+name: redis:
+
+Le nom du service dans Kubernetes. Cela permet de l'identifier facilement dans le cluster. En l'occurrence, ce service s'appelle redis. Ce nom est important, car les autres pods ou services Kubernetes pourront l'utiliser pour accéder à ce service.
+4. spec:
+La section spec contient la spécification du service, c'est-à-dire comment ce service doit fonctionner et comment il est configuré.
+
+type: ClusterIP:
+
+Le type du service. Ici, il s'agit de ClusterIP, ce qui signifie que le service sera accessible uniquement à l'intérieur du cluster Kubernetes, et non à partir de l'extérieur du cluster. C'est généralement le type de service que l'on utilise pour des bases de données ou des services internes qui ne doivent pas être accessibles publiquement.
+Les autres types de services incluent NodePort (qui expose le service à l'extérieur du cluster via un port sur chaque nœud) et LoadBalancer (qui crée un load balancer externe dans certains environnements, comme les clouds).
+ports:
+
+Cette section définit les ports que le service doit écouter et comment il les dirige vers les pods.
+
+name: "redis-service":
+
+Un nom pour le port dans la configuration du service. C'est optionnel et permet de donner un nom significatif au port, mais il n'a pas d'impact direct sur le fonctionnement.
+port: 6379:
+
+C'est le port que le service écoute à l'intérieur du cluster. Les autres services ou pods qui ont besoin de se connecter à Redis vont se connecter à ce port dans le service Kubernetes.
+targetPort: 6379:
+
+targetPort est le port où Redis écoute à l'intérieur du pod. Donc, même si le service Kubernetes écoute sur le port 6379, il redirige le trafic vers ce même port sur les pods qui exécutent Redis. Cela permet au service d'agir comme un point d'accès unique, tout en dirigeant correctement le trafic vers les pods où Redis est réellement exécuté.
+En résumé : port est l'interface externe (le port d'accès pour les autres pods), et targetPort est le port interne où l'application Redis fonctionne.
+selector:
+
+Le sélecteur est utilisé pour associer ce service à un ou plusieurs pods spécifiques.
+
+app: redis:
+
+Ce sélecteur fait en sorte que ce service cible uniquement les pods ayant le label app: redis. En d'autres termes, le service va envoyer le trafic vers les pods qui ont ce label.
+Cela permet de faire en sorte que ce service ne cible que les pods Redis spécifiquement. Les pods de Redis doivent être définis avec ce label (app: redis) pour que le service puisse les sélectionner et y rediriger le trafic.
