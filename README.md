@@ -9,6 +9,7 @@ https://www.youtube.com/watch?v=PKmtoM3A1cE&t=748s
 
 #repository tutorial 
 https://github.com/dockersamples/example-voting-app
+https://github.com/dockersamples/example-voting-app/tree/main
 
 #Shell 
 
@@ -31,6 +32,8 @@ vote
 kubectl get pods -n mon-namespace
 kubectl get services -n mon-namespace
 
+>>>>votting app
+
 >kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/refs/heads/main/k8s-specifications/vote-deployment.yaml -n vote
 
 >kubectl get deployments -n vote
@@ -51,9 +54,23 @@ url app : http://localhost:31000/
 Par exemple, si un service nommé vote existe dans le namespace default, tu peux le supprimer avec :
 >kubectl delete service vote -n default
 
+>>>>result  app
 
-https://github.com/dockersamples/example-voting-app/blob/main/k8s-specifications/result-service.yaml
-https://github.com/dockersamples/example-voting-app/blob/main/k8s-specifications/result-deployment.yaml
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/result-service.yaml -n vote
+
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/result-service.yaml -n vote
+
+>kubectl -n vote get pods
+NAME                     READY   STATUS    RESTARTS   AGE
+result-d8c4c69b8-xx8xb   1/1     Running   0          6m40s
+vote-69cb46f6fb-8ftlk    1/1     Running   0          2d16h
+
+>kubectl get services -n vote
+NAME     TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+result   NodePort   10.107.149.136   <none>        8081:31001/TCP   6m45s
+vote     NodePort   10.102.172.236   <none>        8080:31000/TCP   2d16h
+
+url app : http://localhost:31001/
 
 
 Resiliance 
