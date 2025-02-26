@@ -56,7 +56,7 @@ Par exemple, si un service nommé vote existe dans le namespace default, tu peux
 
 >>>>result  app
 
->kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/result-service.yaml -n vote
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/result-deployment.yaml -n vote
 
 >kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/result-service.yaml -n vote
 
@@ -71,6 +71,16 @@ result   NodePort   10.107.149.136   <none>        8081:31001/TCP   6m45s
 vote     NodePort   10.102.172.236   <none>        8080:31000/TCP   2d16h
 
 url app : http://localhost:31001/
+
+>>>>db
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/db-deployment.yaml -n vote
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/db-service.yaml -n vote
+
+>>>>redis
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/redis-deployment.yaml -n vote
+>kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/redis-service.yaml -n vote
+
+>>>>>worker
 
 
 Resiliance 
