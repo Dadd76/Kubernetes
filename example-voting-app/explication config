@@ -1,0 +1,36 @@
+1. apiVersion: v1
+Cela définit la version de l'API Kubernetes utilisée pour cette ressource. Ici, on utilise la version 1, qui est une version stable et courante pour les objets de type Service.
+
+2. kind: Service
+Cela définit le type de ressource Kubernetes que nous créons, ici un service. Le service est une abstraction qui permet de regrouper plusieurs pods et de les exposer sous un même nom d'URL ou une adresse IP.
+
+3. metadata:
+La section metadata contient des informations générales sur le service, telles que son nom et ses labels.
+
+labels:
+
+app: vote: Un label utilisé pour identifier ce service comme étant lié à l'application "vote". Les labels sont utilisés pour faire correspondre des ressources entre elles, comme faire correspondre ce service avec des pods qui portent un label app: vote.
+name: vote: Le nom du service dans Kubernetes. Ici, le service s'appelle vote.
+
+4. spec:
+La section spec contient les spécifications détaillées du service. C'est ici que sont définis les comportements du service, comme le type de service, les ports, et le sélecteur.
+
+type: NodePort: Cela définit le type de service. Un NodePort permet d'exposer un service à l'extérieur du cluster Kubernetes sur un port spécifique. Kubernetes va attribuer un port sur chaque nœud du cluster (ici, nodePort: 31000), ce qui permet aux utilisateurs d'accéder au service via ce port sur n'importe quel nœud du cluster.
+
+ports: Cette section décrit les ports utilisés par le service.
+
+name: "vote-service": Nom donné au port du service, ici vote-service.
+port: 8080: Le port sur lequel le service écoute à l'intérieur du cluster. Ce port est celui que les autres ressources dans le cluster utiliseront pour communiquer avec ce service.
+targetPort: 80: Le port sur lequel les pods ciblés par ce service écoutent. En d'autres termes, le service redirige les requêtes reçues sur le port 8080 vers le port 80 des pods.
+nodePort: 31000: Le port exposé sur chaque nœud du cluster pour accéder au service depuis l'extérieur. Ici, ce sera le port 31000.
+selector: Cette section définit un sélecteur qui détermine quels pods ce service doit exposer. Il cherche tous les pods qui ont le label app: vote, ce qui signifie que ce service redirigera le trafic vers tous les pods qui portent ce label.
+
+app: vote: Cela correspond à l'étiquette app: vote sur les pods. Ce sélecteur s'assure que seuls les pods qui portent ce label seront accessibles via ce service.
+En résumé :
+Ce fichier YAML définit un service Kubernetes qui :
+
+Est de type NodePort, ce qui permet d'exposer le service à l'extérieur du cluster.
+Écoute sur le port 8080 à l'intérieur du cluster et redirige le trafic vers le port 80 des pods ciblés.
+Est accessible depuis l'extérieur du cluster sur le port 31000 sur tous les nœuds du cluster.
+Cible les pods ayant l'étiquette app: vote.
+Cela permet à toute application extérieure de se connecter au service via l'IP d'un nœud et le port 31000, ce qui redirigera le trafic vers les pods contenant l'application "vote".
