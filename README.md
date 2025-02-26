@@ -83,5 +83,95 @@ Cluster Kubernetes
 │   ├── Pod E (Namespace: prod)
 │   ├── Pod F (Namespace: test)
 
+> kubectl config view --minify
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://kubernetes.docker.internal:6443
+  name: docker-desktop
+contexts:
+- context:
+    cluster: docker-desktop
+    user: docker-desktop
+  name: docker-desktop
+current-context: docker-desktop
+kind: Config
+preferences: {}
+users:
+- name: docker-desktop
+  user:
+    client-certificate-data: DATA+OMITTED
+    client-key-data: DATA+OMITTED
+
+> kubectl config view
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: DATA+OMITTED
+    server: https://kubernetes.docker.internal:6443
+  name: docker-desktop
+contexts:
+- context:
+    cluster: docker-desktop
+    user: docker-desktop
+  name: docker-desktop
+current-context: docker-desktop
+kind: Config
+preferences: {}
+users:
+- name: docker-desktop 
+  user:
+    client-certificate-data: DATA+OMITTED
+    client-key-data: DATA+OMITTED
+
+
+ Comment connecter plusieurs nœuds à un cluster ?
+Si tu veux ajouter plusieurs machines (workers) à ton cluster, voici les étapes :
+
+1️⃣ Récupérer le token de connexion
+Sur le nœud maître, exécute :
+
+sh
+Copier
+Modifier
+kubeadm token create --print-join-command
+Cela te donnera une commande ressemblant à :
+
+sh
+Copier
+Modifier
+kubeadm join master-node-ip:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
+2️⃣ Exécuter la commande sur chaque machine worker
+Sur chaque nœud worker, exécute cette commande générée :
+
+sh
+Copier
+Modifier
+kubeadm join master-node-ip:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
+Cela va connecter le worker au cluster.
+
+3️⃣ Vérifier que les nœuds sont bien ajoutés
+Sur le nœud maître, exécute :
+
+sh
+Copier
+Modifier
+kubectl get nodes
+Si tout fonctionne, tu verras une liste avec :
+
+pgsql
+Copier
+Modifier
+NAME             STATUS   ROLES                  AGE   VERSION
+master-node      Ready    control-plane,master   10m   v1.30.5
+worker-node-1    Ready    <none>                 5m    v1.30.5
+worker-node-2    Ready    <none>                 3m    v1.30.5
+
+Installer Kubernetes Dashboard
+Lance cette commande pour le déployer :
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
 
 
