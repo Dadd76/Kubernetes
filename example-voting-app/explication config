@@ -1,3 +1,47 @@
+### Déclaration du service déployment 
+
+1. apiVersion: apps/v1
+Cela indique que nous utilisons la version apps/v1 de l'API Kubernetes, qui est utilisée pour gérer les déploiements et autres ressources liées aux applications.
+
+2. kind: Deployment
+Le type de ressource que tu crées est un déploiement. Un déploiement dans Kubernetes permet de gérer des pods (et donc des conteneurs) en fonction de la configuration fournie. Kubernetes s'assure que le nombre de réplicas spécifié est toujours disponible.
+
+3. metadata:
+La section metadata fournit des informations générales sur le déploiement.
+
+labels:
+app: vote: Le label app: vote permet d'identifier ce déploiement et d'associer les pods créés à ce déploiement à d'autres ressources (comme le service que tu as défini précédemment).
+name: vote: Le nom du déploiement est vote.
+4. spec:
+La section spec décrit la configuration du déploiement, notamment le nombre de réplicas, le sélecteur et le modèle pour créer les pods.
+
+replicas: 1: Cela indique qu'un seul pod sera déployé. Si tu veux avoir plus d'instances de ton application pour augmenter la disponibilité ou la scalabilité, tu peux augmenter ce nombre (par exemple replicas: 3).
+
+selector:
+
+matchLabels:
+app: vote: Ce sélecteur indique que ce déploiement doit gérer les pods ayant l'étiquette app: vote. Cela permet de lier ce déploiement aux pods correspondants, pour que Kubernetes sache quels pods ce déploiement va gérer.
+template: Le modèle de pod à déployer, c'est-à-dire comment chaque pod sera configuré.
+
+metadata:
+labels:
+app: vote: L'étiquette app: vote est appliquée à chaque pod créé par ce déploiement, ce qui permet au service de cibler ces pods (via le sélecteur du service).
+spec:
+containers: Cette section définit les conteneurs qui doivent être lancés dans le pod.
+image: dockersamples/examplevotingapp_vote: Il s'agit de l'image Docker de ton application. Dans ce cas, il s'agit de l'image dockersamples/examplevotingapp_vote. Si tu as une autre image Docker pour ton application, tu peux la remplacer ici.
+name: vote: Le nom donné au conteneur.
+ports:
+containerPort: 80: Le port sur lequel ton application à l'intérieur du conteneur écoute. Kubernetes va exposer ce port du conteneur à l'intérieur du pod.
+name: vote: Le nom donné à ce port, qui pourrait être utilisé pour la configuration de certains services ou d'autres ressources Kubernetes.
+Ce que fait ce fichier :
+Ce fichier YAML définit un déploiement Kubernetes pour ton application vote. Il crée un pod qui contient un seul conteneur utilisant l'image dockersamples/examplevotingapp_vote et exposant le port 80 du conteneur.
+
+Intégration avec ton fichier de service :
+Ce déploiement va créer un pod avec l'étiquette app: vote. Comme ton service Kubernetes cible les pods avec le même label (app: vote), le service que tu as défini précédemment pourra diriger le trafic vers ce pod.
+
+
+### Déclaration du service vote 
+
 1. apiVersion: v1
 Cela définit la version de l'API Kubernetes utilisée pour cette ressource. Ici, on utilise la version 1, qui est une version stable et courante pour les objets de type Service.
 
