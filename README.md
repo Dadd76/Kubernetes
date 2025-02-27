@@ -84,6 +84,9 @@ url app : http://localhost:31001/
 >kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/worker-deployment.yaml -n vote
 >kubectl apply -f https://raw.githubusercontent.com/dockersamples/example-voting-app/main/k8s-specifications/worker-service.yaml -n vote
 
+en un coup 
+>kubectl create -f k8s-specifications/
+
 Resiliance 
 Print the container ID for the result app:
 
