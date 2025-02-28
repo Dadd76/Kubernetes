@@ -6,6 +6,7 @@ https://en.wikipedia.org/wiki/Kubernetes
 https://kubernetes.io/
 https://birthday.play-with-docker.com/kubernetes-docker-desktop/
 https://www.youtube.com/watch?v=PKmtoM3A1cE&t=748s
+service : https://www.youtube.com/watch?v=T4Z7visMM4E&t
 
 #repository tutorial 
 https://github.com/dockersamples/example-voting-app
