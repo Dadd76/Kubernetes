@@ -11,6 +11,7 @@ service : https://www.youtube.com/watch?v=T4Z7visMM4E&t
 #repository tutorial 
 https://github.com/dockersamples/example-voting-app
 https://github.com/dockersamples/example-voting-app/tree/main
+https://hub.docker.com/
 
 #Shell 
 
@@ -205,7 +206,7 @@ Lance cette commande pour le déployer :
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 
-https://hub.docker.com/
+
 
 
 
