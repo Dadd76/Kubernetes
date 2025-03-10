@@ -195,7 +195,9 @@ master-node      Ready    control-plane,master   10m   v1.30.5
 worker-node-1    Ready    <none>                 5m    v1.30.5
 worker-node-2    Ready    <none>                 3m    v1.30.5
 
+-----------------------------------------------------------------------------------------------------------------------------
 Dashboard
+-----------------------------------------------------------------------------------------------------------------------------
 >  kubectl proxy
 Starting to serve on 127.0.0.1:8001
 
@@ -210,7 +212,7 @@ kubernetes-dashboard-certs        Opaque   0      13d
 kubernetes-dashboard-csrf         Opaque   1      13d
 kubernetes-dashboard-key-holder   Opaque   2      13d
 
-https://github.com/Dadd76/Kubernetes/blob/main/example-voting-app/ServiceAccount
+https://github.com/Dadd76/Kubernetes/blob/main/example-voting-app/dashboard-admin.yaml
 > kubectl apply -f D:\dashboard-admin.yaml
 serviceaccount/admin-user created
 
@@ -232,8 +234,8 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 
 Installer Kubernetes Dashboard
 Lance cette commande pour le déployer :
-
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+-----------------------------------------------------------------------------------------------------------------------------
 
 
 
