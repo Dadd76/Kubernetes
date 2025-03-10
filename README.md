@@ -187,9 +187,6 @@ Cela va connecter le worker au cluster.
 3️⃣ Vérifier que les nœuds sont bien ajoutés
 Sur le nœud maître, exécute :
 
-sh
-Copier
-Modifier
 kubectl get nodes
 Si tout fonctionne, tu verras une liste avec :
 
@@ -200,6 +197,40 @@ NAME             STATUS   ROLES                  AGE   VERSION
 master-node      Ready    control-plane,master   10m   v1.30.5
 worker-node-1    Ready    <none>                 5m    v1.30.5
 worker-node-2    Ready    <none>                 3m    v1.30.5
+
+Dashboard
+>  kubectl proxy
+Starting to serve on 127.0.0.1:8001
+
+> kubectl get svc -n kubernetes-dashboard
+NAME                        TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+dashboard-metrics-scraper   ClusterIP   10.96.231.70    <none>        8000/TCP   13d
+kubernetes-dashboard        ClusterIP   10.106.66.136   <none>        443/TCP    13d
+
+> kubectl get secret -n kubernetes-dashboard
+NAME                              TYPE     DATA   AGE
+kubernetes-dashboard-certs        Opaque   0      13d
+kubernetes-dashboard-csrf         Opaque   1      13d
+kubernetes-dashboard-key-holder   Opaque   2      13d
+
+> kubectl apply -f D:\dashboard-admin.yaml
+serviceaccount/admin-user created
+
+>kubectl get serviceaccount admin-user -n kubernetes-dashboard
+NAME         SECRETS   AGE
+admin-user   0         62s
+> kubectl get clusterrolebinding admin-user
+NAME         ROLE                        AGE
+admin-user   ClusterRole/cluster-admin   2m39s
+
+Générer le token du nouvel admin
+> kubectl create token admin-user -n kubernetes-dashboard
+eyJhbGciOiJSUzI1NiIsImtpZCI6IlZOZnNxRWhwVWFLWVJwRno2c3lSdkJYbFNWN1NGWjRmLWZiN0JwWDliaW8ifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzQxNjI4Nzc0LCJpYXQiOjE3NDE2MjUxNzQsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiMDU0OTUzZmItZWU5Yi00MTRiLWFhY2UtYjA5MzAyNDdhZDhmIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhZG1pbi11c2VyIiwidWlkIjoiNmM2YWM3NGYtMjQ3MC00Yzg4LThhNTItMzc1YWNiZDc1Mzc1In19LCJuYmYiOjE3NDE2MjUxNzQsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDphZG1pbi11c2VyIn0.K9or6zVApBxCTEBILgXUSpmIMPEfZS3vlG9kwYagGbV867lgvdg8lZliaAbxBXP0H5GuqmDkyVFdpjl5Ekf4n3Z3O3q43eokcdlplEs7ZRD2BrNszkwJ3peQqd13oq7pJzvHTUf6hS7hIYnwBBKubkMADvwapfYYVwRuimNvH08R06vepmV8Tt6Ld2bsrztLL0O3Mk5c9_aL90ZazRiLgd46DSkoln44vSkLjlTOYG--mTYbvdgSPZqNVSX4I6TArMuM5_DZijptTMtSxA4UCj88MGPTgn-hE0lZNl9F-2eBdLA3eWLsNw0VaIZcoBkQBe-YhgSMWezkg0mcsnaijw
+
+>$tokenName = (kubectl get secret -n kubernetes-dashboard | Where-Object { $_ -match "admin-user-token" }) -split '\s+' | Select-Object -First 1
+>kubectl get secret $tokenName -n kubernetes-dashboard -o jsonpath="{.data.token}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_)) }
+
+
 
 Installer Kubernetes Dashboard
 Lance cette commande pour le déployer :
