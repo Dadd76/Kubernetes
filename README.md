@@ -1,7 +1,9 @@
 # Kubernetes
 Initiation kubernetes 
 
-#Documentation
+-----------------------------------------------------------------------------------------------------------------------------
+Documentation
+-----------------------------------------------------------------------------------------------------------------------------
 https://en.wikipedia.org/wiki/Kubernetes
 https://kubernetes.io/
 https://birthday.play-with-docker.com/kubernetes-docker-desktop/
@@ -13,11 +15,34 @@ https://github.com/dockersamples/example-voting-app
 https://github.com/dockersamples/example-voting-app/tree/main
 https://hub.docker.com/
 
-#Shell 
+-----------------------------------------------------------------------------------------------------------------------------
+Activer kubernetes sur docker desktop
+-----------------------------------------------------------------------------------------------------------------------------
+https://birthday.play-with-docker.com/kubernetes-docker-desktop/
 
->kubectl get nodes -o wide
+1. Install Docker Desktop
+Docker Desktop is freely available in a community edition, for Windows and Mac. Start by downloading and installing the right version for you:
+2. Enable Kubernetes
+Settings > Kubernetes > enable Kubernets (swith on)
+3. Check the state of your Docker Desktop cluster
+> kubectl get nodes -o wide
 NAME             STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE         KERNEL-VERSION                       CONTAINER-RUNTIME
 docker-desktop   Ready    control-plane   18h   v1.30.5   192.168.65.3   <none>        Docker Desktop   5.15.167.4-microsoft-standard-WSL2   docker://27.4.0
+   
+-----------------------------------------------------------------------------------------------------------------------------
+Commande shell 
+-----------------------------------------------------------------------------------------------------------------------------
+
+#obtenir la version de kubernetes 
+> kubectl version
+Client Version: v1.30.5
+Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+Server Version: v1.30.5
+
+-----------------------------------------------------------------------------------------------------------------------------
+Déploiement Vote app
+-----------------------------------------------------------------------------------------------------------------------------
+#Shell 
 
 création du namespace
 >kubectl create namespace vote
@@ -158,30 +183,21 @@ users:
     client-certificate-data: DATA+OMITTED
     client-key-data: DATA+OMITTED
 
-
- Comment connecter plusieurs nœuds à un cluster ?
+-----------------------------------------------------------------------------------------------------------------------------
+Comment connecter plusieurs nœuds à un cluster ?
+-----------------------------------------------------------------------------------------------------------------------------
 Si tu veux ajouter plusieurs machines (workers) à ton cluster, voici les étapes :
 
 1️⃣ Récupérer le token de connexion
 Sur le nœud maître, exécute :
-
-sh
-Copier
-Modifier
-kubeadm token create --print-join-command
+>kubeadm token create --print-join-command
 Cela te donnera une commande ressemblant à :
 
-sh
-Copier
-Modifier
-kubeadm join master-node-ip:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
+>kubeadm join master-node-ip:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
 2️⃣ Exécuter la commande sur chaque machine worker
 Sur chaque nœud worker, exécute cette commande générée :
 
-sh
-Copier
-Modifier
-kubeadm join master-node-ip:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
+>kubeadm join master-node-ip:6443 --token <TOKEN> --discovery-token-ca-cert-hash sha256:<HASH>
 Cela va connecter le worker au cluster.
 
 3️⃣ Vérifier que les nœuds sont bien ajoutés
@@ -196,7 +212,7 @@ worker-node-1    Ready    <none>                 5m    v1.30.5
 worker-node-2    Ready    <none>                 3m    v1.30.5
 
 -----------------------------------------------------------------------------------------------------------------------------
-Dashboard
+Dashboard (https://kubernetes.io/fr/docs/tasks/access-application-cluster/web-ui-dashboard/)
 -----------------------------------------------------------------------------------------------------------------------------
 >  kubectl proxy
 Starting to serve on 127.0.0.1:8001
@@ -223,7 +239,7 @@ admin-user   0         62s
 NAME         ROLE                        AGE
 admin-user   ClusterRole/cluster-admin   2m39s
 
-Générer le token du nouvel admin
+Générer le token du nouvel admin (token valable 1 heure)
 > kubectl create token admin-user -n kubernetes-dashboard
 eyJhbGciOiJSUzI1NiIsImtpZCI6IlZOZnNxRWhwVWFLWVJwRno2c3lSdkJYbFNWN1NGWjRmLWZiN0JwWDliaW8ifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzQxNjI4Nzc0LCJpYXQiOjE3NDE2MjUxNzQsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiMDU0OTUzZmItZWU5Yi00MTRiLWFhY2UtYjA5MzAyNDdhZDhmIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhZG1pbi11c2VyIiwidWlkIjoiNmM2YWM3NGYtMjQ3MC00Yzg4LThhNTItMzc1YWNiZDc1Mzc1In19LCJuYmYiOjE3NDE2MjUxNzQsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDphZG1pbi11c2VyIn0.K9or6zVApBxCTEBILgXUSpmIMPEfZS3vlG9kwYagGbV867lgvdg8lZliaAbxBXP0H5GuqmDkyVFdpjl5Ekf4n3Z3O3q43eokcdlplEs7ZRD2BrNszkwJ3peQqd13oq7pJzvHTUf6hS7hIYnwBBKubkMADvwapfYYVwRuimNvH08R06vepmV8Tt6Ld2bsrztLL0O3Mk5c9_aL90ZazRiLgd46DSkoln44vSkLjlTOYG--mTYbvdgSPZqNVSX4I6TArMuM5_DZijptTMtSxA4UCj88MGPTgn-hE0lZNl9F-2eBdLA3eWLsNw0VaIZcoBkQBe-YhgSMWezkg0mcsnaijw
 
