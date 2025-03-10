@@ -187,12 +187,9 @@ Cela va connecter le worker au cluster.
 3️⃣ Vérifier que les nœuds sont bien ajoutés
 Sur le nœud maître, exécute :
 
-kubectl get nodes
+>kubectl get nodes
 Si tout fonctionne, tu verras une liste avec :
 
-pgsql
-Copier
-Modifier
 NAME             STATUS   ROLES                  AGE   VERSION
 master-node      Ready    control-plane,master   10m   v1.30.5
 worker-node-1    Ready    <none>                 5m    v1.30.5
@@ -213,6 +210,7 @@ kubernetes-dashboard-certs        Opaque   0      13d
 kubernetes-dashboard-csrf         Opaque   1      13d
 kubernetes-dashboard-key-holder   Opaque   2      13d
 
+https://github.com/Dadd76/Kubernetes/blob/main/example-voting-app/ServiceAccount
 > kubectl apply -f D:\dashboard-admin.yaml
 serviceaccount/admin-user created
 
@@ -230,7 +228,7 @@ eyJhbGciOiJSUzI1NiIsImtpZCI6IlZOZnNxRWhwVWFLWVJwRno2c3lSdkJYbFNWN1NGWjRmLWZiN0Jw
 >$tokenName = (kubectl get secret -n kubernetes-dashboard | Where-Object { $_ -match "admin-user-token" }) -split '\s+' | Select-Object -First 1
 >kubectl get secret $tokenName -n kubernetes-dashboard -o jsonpath="{.data.token}" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($_)) }
 
-
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/workloads?namespace=default
 
 Installer Kubernetes Dashboard
 Lance cette commande pour le déployer :
