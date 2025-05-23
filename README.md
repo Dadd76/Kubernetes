@@ -4,6 +4,7 @@ Initiation kubernetes
 -----------------------------------------------------------------------------------------------------------------------------
 Documentation
 -----------------------------------------------------------------------------------------------------------------------------
+https://www.docker.com/blog/how-to-set-up-a-kubernetes-cluster-on-docker-desktop/
 https://en.wikipedia.org/wiki/Kubernetes
 https://kubernetes.io/
 https://birthday.play-with-docker.com/kubernetes-docker-desktop/
